@@ -1,0 +1,31 @@
+# Set default values for all following accounts.
+defaults
+auth           on
+tls            on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile        ~/.msmtp.log
+
+# posteo.de
+account        posteo
+host           posteo.de
+port           587
+from           mattiasgiese@posteo.net
+user           mattiasgiese@posteo.net
+passwordeval   "gopass show -n -o internet/dienstleister/posteo"
+
+# work
+account          iits
+host             smtp.office365.com
+port             587
+tls              on
+tls_starttls     on
+tls_trust_file   /etc/ssl/certs/ca-bundle.crt
+tls_certcheck    on
+user             mattias.cockburn@iits-consulting.de
+auth             xoauth2
+passwordeval     "oauth2ms"
+from             mattias.cockburn@iits-consulting.de
+
+# Set a default account
+account default : posteo
+

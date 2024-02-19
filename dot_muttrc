@@ -1,0 +1,163 @@
+## Basics
+source ~/.mutt/settings/basics
+
+# Colors
+source ~/.mutt/colorschemes/vombatidae.neomuttrc
+
+source ~/.mutt/settings/macros
+source ~/.mutt/settings/mailboxes
+source ~/.mutt/settings/bindings
+
+## dist gpg setting
+#source /usr/share/doc/neomutt/samples/gpg.rc
+source ~/.mutt/settings/pgp
+
+source ~/.mutt/settings/attachments
+source ~/.mutt/settings/sidebar
+
+source ~/.mutt/settings/notmuch
+
+## Accounts
+# only source the default account
+source "~/.mutt/accounts/iits"
+
+## macros for account change
+macro index,pager \e1 ":source ~/.mutt/accounts/posteo<enter><change-folder> +INBOX<enter>"
+macro index,pager \e2 ":source ~/.mutt/accounts/iits<enter><change-folder> +INBOX<enter>"
+
+
+## SMTP settings
+set use_from = yes
+
+## address book
+# use khard for contact lookup
+set query_command = "echo %s | xargs khard email --parsable -- 2>/dev/null"
+macro index,pager A "<pipe-message>khard add-email<return>" "add the sender address to carddav"
+bind editor <Tab> complete-query
+
+# Allow the edit of headers. This is useful b/c i am using completion plugins
+# for contacts in neovim
+set edit_headers=yes
+
+## Date/Time and index format in index
+set date_format="%d/%m/%y %T"
+set index_format="%2C | %Z [%d] %-30.30F (%-4.4c) %s"
+
+## From field gets 30% of remaining space, Subject gets 70%.
+### Remaining space is the total width minus the other fields (35), minus the sidebar (24)
+set my_col_from = `echo $((30 * ($(tput cols)-35-24) / 100))`
+set my_col_subject = `echo $((70 * ($(tput cols)-35-24) / 100))`
+
+folder-hook .*[sS]ent.* 'set index_format="%2C | %Z [%d] %-$my_col_from.${my_col_from}t (%-4.4c) %-$my_col_subject.${my_col_subject}s"'
+folder-hook ! .*[sS]ent.* 'set index_format="%2C | %Z [%d] %-$my_col_from.${my_col_from}F (%-4.4c) %-$my_col_subject.${my_col_subject}s"'
+
+# convenience
+#
+## forgotten attachment patch (neomutt)
+set abort_noattach = ask-yes
+set abort_noattach_regex = "\\<(anhängen|angehängt|anhang|anhänge|hängt an|attached|adjunto|attachment)\\>"
+
+## neomutt - sort folders by message count
+set sort=threads
+set sort_browser="reverse-count"
+set sort_aux = last-date-received
+
+## better navigation
+bind index g  noop
+bind index gg first-entry
+bind index G  last-entry
+# Ctrl-R to mark all as read
+macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
+bind index <space>  collapse-thread
+
+## fast replies
+# Do not ask for the recevier and if the email should be included
+set fast_reply=yes
+set include=yes
+
+## attachments
+macro attach W "<save-entry><bol>~/Downloads/<eol>" "Save to Downloads folder"
+
+# go to mailbox folder after index view
+macro   index   q       '<change-folder>?<toggle-mailboxes>'
+macro   browser q       '<exit><quit>'
+
+# show mailboxes with new mail
+macro index,pager y <change-folder>?<toggle-mailboxes>
+
+# auto view html mail with elinks
+auto_view text/html text/calendar
+alternative_order text/plain text/html text/*
+
+# open in browser
+# using ~/Downloads because i am also using firejail
+macro attach 'V' "<pipe-entry>cat >~/Downloads/mutt-mail.html && browser ~/Downloads/mutt-mail.html<enter>"
+
+
+## muttjump integration
+macro generic ,j "<enter-command>push <pipe-message>muttjump<enter><enter>" "jump to original message"
+set wait_key = no
+
+## statusbar, stolen from http://www.benfrancom.com/2014/11/24/mutt-offline-with-mbsync/
+    set status_chars  = " *%A"
+    set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
+
+# Example NeoMutt config file for the attach-headers-color feature.
+
+# Color if the attachment is autoviewed
+color   attach_headers     brightgreen     default        "Autoview"
+
+# Color only the brackets around the headers
+color   attach_headers     brightyellow    default        "^\\[--"
+color   attach_headers     brightyellow    default        "--]$"
+
+# Color the mime type and the size
+color   attach_headers     green           default        "Type: [a-z]+/[a-z0-9\-]+"
+color   attach_headers     green           default        "Size: [0-9\.]+[KM]"
+
+# Color GPGME signature checks
+color   attach_headers     brightgreen     default        "Good signature from.*"
+color   attach_headers     brightred       default        "Bad signature from.*"
+color   attach_headers     brightred       default        "BAD signature from.*"
+color   attach_headers     brightred       default        "Note: This key has expired!"
+color   attach_headers     brightmagenta   default        "Problem signature from.*"
+color   attach_headers     brightmagenta   default        "WARNING: This key is not certified with a trusted signature!"
+color   attach_headers     brightmagenta   default        "         There is no indication that the signature belongs to the owner."
+color   attach_headers     brightmagenta   default        "can't handle these multiple signatures"
+color   attach_headers     brightmagenta   default        "signature verification suppressed"
+color   attach_headers     brightmagenta   default        "invalid node with packet of type"
+
+## new email command
+set new_mail_command="notify-send --icon='/usr/share/icons/gnome/22x22/apps/accessories-text-editor.png' 'New Email in %f' '%n new messages, %u unread.' &"
+
+## dont mark unread mail as old when i quit mutt
+set mark_old=no
+
+# Turn off the help line at the top
+set help=no
+
+macro attach A "<pipe-message>~/.mutt/filters/vcalendar-filter | mutt2khal<enter>" "Save ical event"
+macro attach \ca "<pipe-message>khal import<enter>" "Save .ics in khal"
+
+
+# show index in pagerview
+set pager_index_lines = 10 # number of index lines to show
+set pager_context = 3      # number of context lines to show
+set pager_stop             # don't go to next message automatically
+set menu_scroll            # scroll in menus
+set tilde                  # show tildes like in vim
+unset markers              # no ugly plus signs
+
+# forward attachments
+set mime_forward_rest=yes
+set mime_forward=ask-no
+
+# stop that fucking beeping
+set beep=no
+set beep_new=no
+
+# header settings
+ignore *                                # ignore all headers
+unignore from: to: cc: date: subject:   # show only these
+unhdr_order *                           # some distros order things by default
+hdr_order from: to: cc: date: subject:  # and in this order

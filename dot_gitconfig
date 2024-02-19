@@ -1,0 +1,70 @@
+[user]
+  email = mattias.cockburn@posteo.net
+  name = Mattias Cockburn
+  signingKey = 5B2B8D57736C5CB2E561FB4613517D5C7BD72B14!
+[alias]
+  main         = "!sh -c \"git checkout main; git pull\""
+  pushall      = !git remote | xargs -L1 git push --all
+  st           = status
+  ci           = commit
+  co           = checkout
+  br           = branch
+  rb           = rebase
+  logg         = log --decorate --graph
+  lg           = log --graph --pretty=tformat:'%Cred%h%Creset -%C(yellow)%d%Creset%s %Cgreen(%an %cr)%Creset' --abbrev-commit --date=relative
+  lga          = "!sh -c 'git log --author=\"$1\" -p $2' -"
+  lol          = log --graph --decorate --pretty=oneline --abbrev-commit
+  tla          = "!sh -c \"git log -${1:-10} --graph --abbrev-commit --decorate=no --date=format:'%Y-%m-%d %H:%I:%S' --format=format:'%C(03)%>|(26)%h%C(reset)  %C(04)%ad%C(reset)  %C(green)%<(20,trunc)%an%C(reset)  %C(auto)%d%C(reset) %>|(1)%s%C(reset)'\""
+  tl           = "!sh -c \"git log -${1:-10} --graph --abbrev-commit --decorate=no --date=format:'%Y-%m-%d %H:%I:%S' --format=format:'%C(03)%>|(5)%h%C(reset)  %C(04)%ad%C(reset)  %C(green)%<(20,trunc)%an%C(reset)  %C(auto)%d%C(reset) %>|(1)%s%C(reset)'\""
+  tree         = log --graph --decorate --pretty=oneline --abbrev-commit --all
+  logfull      = log --pretty=fuller --graph --stat -p
+  cat          = cat-file -p
+  cop          = "!sh -c \"git checkout ${@} $(git branch --list -av | fzf | sed -e 's,remotes/,,' -e 's,origin/,,' -e 's,^ *[+*]* *,,' | awk '{print $1}')\""
+  unstage      = reset HEAD
+	uncommit     = reset HEAD^
+  uncommithard = reset --hard HEAD^
+  undomerge    = reset --hard ORIG_HEAD
+  whoops       = commit -a --amend -C HEAD
+  serve        = !git daemon --log-destination=stderr --reuseaddr --verbose --base-path=. --export-all ./.git
+
+[includeIf "gitdir:~/aur/"]
+  path = .gitconfigs/archlinux
+
+[includeIf "gitdir:~/git/iits/"]
+  path = /home/mattias/.gitconfigs/iits
+
+[includeIf "gitdir:~/git/schwarz/"]
+  path = /home/mattias/.gitconfigs/iits
+
+[commit]
+  gpgSign = true
+[tag]
+  gpgSign = true
+
+[core]
+	excludesfile = /home/mattias/.config/git/ignore
+  pager = delta
+[credential]
+	helper = cache --timeout=7200
+[push]
+  autoSetupRemote = true
+[pull]
+	rebase = true
+[init]
+	defaultBranch = main
+[merge]
+	renamelimit = 25354
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true    # use n and N to move between diff sections
+    light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+    true-color = always
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
