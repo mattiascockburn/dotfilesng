@@ -1,0 +1,57 @@
+@import url("../../.cache/wal/colors-waybar.css");
+
+* {
+    border: none;
+    border-radius: 0;
+    font-family: monospace;
+    font-size: 14px;
+    min-height: 0;
+}
+window#waybar {
+    background: @background;
+    color: white;
+}
+window#waybar {
+    background-color: @background;
+    border-bottom: 3px solid rgba(100, 114, 125, 0.5);
+    color: #ffffff;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+#workspaces button {
+    padding: 0 10px;
+    background: transparent;
+    color: @foreground;
+}
+#workspaces button:hover {
+    box-shadow: inherit;
+    text-shadow: inherit;
+}
+#workspaces button.focused {
+    background: @foreground;
+    color: @background
+}
+#mode, #clock, #xmr, #memory, #temperature.cpu, #temperature.gpu, #pulseaudio, #pulseaudio.muted, #idle_inhibitor {
+    padding: 0 10px;
+    margin: 0 5px;
+    background: transparent;
+    background-color: transparent;
+    color: @foreground;
+}
+#mode {
+}
+#memory {
+}
+#temperature.cpu {
+}
+#temperature.gpu {
+}
+#clock {
+}
+#idle_inhibitor {
+}
+#pulseaudio {
+}
+#pulseaudio.muted {
+}
