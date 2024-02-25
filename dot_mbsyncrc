@@ -1,0 +1,88 @@
+Create Both
+Expunge Both
+SyncState *
+
+
+IMAPAccount posteo
+Host posteo.de
+User mattiasgiese@posteo.net
+PassCmd "gopass show -u -o internet/dienstleister/posteo"
+SSLType IMAPS
+AuthMechs LOGIN
+
+IMAPStore posteo-remote
+Account posteo
+
+MaildirStore posteo-local
+Path ~/mail/posteo/
+Inbox ~/mail/posteo/INBOX
+SubFolders Verbatim
+
+Channel posteo-inbox
+Far :posteo-remote:
+Near :posteo-local:
+Patterns "INBOX*"
+
+Channel posteo-sent
+Far :posteo-remote:"Sent"
+Near :posteo-local:sent
+
+Channel posteo-trash
+Far :posteo-remote:"Trash"
+Near :posteo-local:trash
+
+Channel posteo-archive
+Far :posteo-remote:"Archive"
+Near :posteo-local:Archive
+Patterns "*"
+
+Group posteo
+Channel posteo-inbox
+Channel posteo-sent
+Channel posteo-trash
+Channel posteo-archive
+
+IMAPAccount iits
+Host outlook.office365.com
+User mattias.cockburn@iits-consulting.de
+SSLType IMAPS
+PassCmd oauth2ms
+AuthMechs XOAUTH2
+
+IMAPStore iits-remote
+Account iits
+
+MaildirStore iits-local
+Path ~/mail/iits/
+Inbox ~/mail/iits/INBOX
+SubFolders Verbatim
+
+Channel iits-inbox
+Far :iits-remote:
+Near :iits-local:
+Patterns "INBOX*"
+
+Channel iits-sent
+Far :iits-remote:"Sent Items"
+Near :iits-local:Sent
+
+Channel iits-trash
+Far :iits-remote:"Deleted Items"
+Near :iits-local:Trash
+
+Channel iits-archive
+Far :iits-remote:"Archive"
+Near :iits-local:Archive
+Patterns "*"
+
+Channel iits-spam
+Far :iits-remote:"Junk Email"
+Near :iits-local:Spam
+Patterns "*"
+
+Group iits
+Channel iits-inbox
+Channel iits-sent
+Channel iits-trash
+Channel iits-archive
+Channel iits-spam

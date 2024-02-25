@@ -1,0 +1,20 @@
+#!/bin/bash
+# simple wrapper around pass which only prints one item instead of the whole file
+
+[[ $# -lt 2 ]] && {
+  echo "Usage: $0 user|password passname"
+  exit 1
+}
+mode="$1"
+passname="$2"
+
+case "$mode" in
+  password)
+    gopass show -o -n "$passname" 2>/dev/null
+    ;;
+  user)
+    gopass show "$passname" 2>/dev/null | awk '/user:/ { print $2 }'
+    ;;
+  *)
+    exit 1
+esac

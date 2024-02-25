@@ -1,0 +1,6 @@
+tags
+*.swp
+*~
+Session.vim
+.undodir
+*.zst

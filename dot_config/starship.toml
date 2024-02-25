@@ -1,0 +1,33 @@
+
+[character]      # The name of the module we are configuring is "character"
+success_symbol = "😹 ➜"     # The "symbol" segment is being set to "➜"
+error_symbol = "🙀 ✗"
+
+
+[hostname]
+ssh_only = false
+style = "bold dimmed blue"
+
+[git_status]
+conflicted = "🏳"
+ahead = "🏎💨"
+behind = "😰"
+diverged = "😵"
+untracked = "🤷"
+stashed = "📦"
+modified = "📝"
+staged = "📥"
+renamed = "👅"
+deleted = "🗑"
+
+[kubernetes]
+#format = '[⛵ ($user on )($cluster in )$context \($namespace\)](bright green) '
+format = '[⛵ ($user)/($cluster)\($namespace\)](bright green) '
+disabled = false
+# [kubernetes.context_aliases]
+# 'dev.local.cluster.k8s' = 'dev'
+# '.*/openshift-cluster/.*' = 'openshift'
+# 'gke_.*_(?P<var_cluster>[\w-]+)' = 'gke-$var_cluster'
+# [kubernetes.user_aliases]
+# 'dev.local.cluster.k8s' = 'dev'
+# 'root/.*' = 'root'

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [[ -n "$WAYLAND_DISPLAY" ]]; then
+  CMD='wofi'
+  OPTS='-d -p browser'
+else
+  CMD='rofi'
+  OPTS='-dmenu -p browser'
+fi
+readarray browser_list <<<"firefox -P default
+firefox -P basic
+firefox -P schwarz
+firefox -P banking
+firefox --ProfileManager
+play
+qcode
+| xclip -selection c
+chromium
+qutebrowser"
+printf -v menu_items '%s\\n' "${browser_list[@]}"
+
+menu=$(echo -e ${menu_items} | $CMD $OPTS)
+
+if [[ $menu == \|* ]]; then
+    eval echo $@ $menu &>/dev/null &
+else
+    eval $menu $@ &>/dev/null &
+fi

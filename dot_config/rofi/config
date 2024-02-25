@@ -1,0 +1,2 @@
+@theme: ~/.config/rofi/themes/Arc-Dark.rasi
+rofi.font: Iosevka 13

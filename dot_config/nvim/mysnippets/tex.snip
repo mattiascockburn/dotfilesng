@@ -1,0 +1,112 @@
+snippet b1page
+alias \b1page
+	\begin{frame}[fragile]
+	\frametitle<presentation>{${1:#:title}}
+	\mode<article>{
+	\includethumb
+	}
+
+	\mode
+	<presentation>
+
+	${2:TARGET}
+
+	\mode
+	<article>
+
+	\mode
+	<all>
+
+	\end{frame}
+	\newpage
+
+snippet b1note
+  \mode<article>{
+  \begin{b1note}{${1:#:title}}
+  ${2:TARGET}
+  \end{b1note}
+  }
+
+snippet listing
+  \begin{lstlisting}
+  ${1:#:title}
+  \end{lstlisting}
+
+snippet image
+  \begin{figure}[htb!]
+   \begin{center}
+     \includegraphics[width=\textwidth]{${1:#:images/}}
+   \end{center}
+   \caption{${1:#:caption}}
+   \label{fig:tux}
+  \end{figure}
+snippet verified
+alias uv
+  % URL(s) verified on `strftime("%d %b %Y")` by giese@b1-systems.de
+
+snippet ttt
+  \texttt{${1:#:text}} ${2:TARGET}
+
+snippet tit
+alias cursive
+  \textit{${1:#:text}} ${2:TARGET}
+
+snippet tbf
+alias bold
+  \textbf{${1:#:text}} ${2:TARGET}
+
+snippet rarrow
+alias ->
+  $\rightarrow$
+
+snippet ...
+  \ldots
+
+snippet sles
+  \slesV{${1:#:test}} ${2:TARGET}
+
+snippet rhel
+  \rhelV{${1:#:test}} ${2:TARGET}
+
+snippet ""
+  "`${1:#:text}"'${2:TARGET}
+
+snippet ~
+  $\sim$
+
+snippet shellblock_slide
+alias sbslide
+  \begin{block}{${1:#:title}}
+  \begin{verbatim}
+  ${2:TARGET}
+  \end{verbatim}
+  \end{block}
+
+snippet shellblock_article
+alias sbarticle
+  \begin{block}{${1:#:title}}
+  \begin{lstlisting}
+  ${2:TARGET}
+  \end{lstlisting}
+  \end{block}
+
+snippet nsz
+  \normalsize
+
+snippet fns
+  \footnotesize
+
+snippet comment
+alias %
+  % ${1:#:text}, giese@b1-systems.de (`strftime("%d %b %Y")`)
+
+snippet sep
+alias %%%
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+snippet lstlisting
+alias listing
+  \begin{lstlisting}
+  ${1:TARGET}
+  \end{lstlisting}
+
