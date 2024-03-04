@@ -66,6 +66,7 @@ ssm_session() {
 
 alias unlock_srv='gopass show -o -n layer8.fail/encroot/md2|  ssh -i ~/.ssh/hetzner -oPort=222 root@cockburn.tech unlock'
 alias unlock_l8f='gopass show -o -n l8.wtf/crypt/rootfs | ssh -i ~/.ssh/hetzner -oPort=222 root@l8.wtf unlock'
+alias unlock_amarula='gopass show -o -n amarula/luks/rootfs | ssh -i ~/.ssh/amarula -oPort=222 root@10.10.42.200 unlock'
 
 # Try to avoid nested ranger instances
 ranger() {
@@ -139,3 +140,5 @@ kube-get-all-images() {
   # see https://kubernetes.io/docs/tasks/access-application-cluster/list-all-running-container-images/
   kubectl get pods --all-namespaces -o go-template --template="{{range .items}}{{range .spec.containers}}{{.image}} {{end}}{{end}}" | tr ' ' \\n
 }
+
+
