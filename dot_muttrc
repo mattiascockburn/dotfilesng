@@ -19,7 +19,11 @@ source ~/.mutt/settings/notmuch
 
 ## Accounts
 # only source the default account
+{{- if eq .chezmoi.hostname "manhattan" }}
 source "~/.mutt/accounts/iits"
+{{ else }}
+source "~/.mutt/accounts/posteo"
+{{- end }}
 
 ## macros for account change
 macro index,pager \e1 ":source ~/.mutt/accounts/posteo<enter><change-folder> +INBOX<enter>"
