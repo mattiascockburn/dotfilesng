@@ -19,9 +19,9 @@ source ~/.mutt/settings/notmuch
 
 ## Accounts
 # only source the default account
-{{- if eq .chezmoi.hostname "manhattan" }}
+{{- if (eq .chezmoi.hostname "manhattan") }}
 source "~/.mutt/accounts/iits"
-{{ else }}
+{{- else }}
 source "~/.mutt/accounts/posteo"
 {{- end }}
 
