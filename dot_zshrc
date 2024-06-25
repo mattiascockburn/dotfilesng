@@ -132,6 +132,8 @@ for prog in flux kind; do
   which $prog &>/dev/null && . <($prog completion zsh)
 done
 
+which mise &>/dev/null && eval "$(mise activate zsh)"
+
 # Use zsh fzf plugin
 [[ -d "${HOME}/.zsh/fzf-zsh-plugin/bin" ]] && {
   export PATH="${PATH}:${HOME}/.zsh/fzf-zsh-plugin/bin"
