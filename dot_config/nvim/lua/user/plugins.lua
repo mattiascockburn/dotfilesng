@@ -179,6 +179,8 @@ local plugins = {
   "lukas-reineke/lsp-format.nvim", -- autoformat using Language servers on write
   "RRethy/vim-illuminate",         -- illuminate current keyword in buffer
   -- DAP / Debug Adapter Protocol related plugins
+
+  "nvim-neotest/nvim-nio", -- dep for some other stuff like dap-ui
   {
     "rcarriga/nvim-dap-ui",
     dependencies = {
