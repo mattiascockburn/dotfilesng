@@ -70,6 +70,12 @@ local plugins = {
   -- Colorschemes
   -- 'lunarvim/colorschemes' -- A bunch of colorschemes you can try out
   "EdenEast/nightfox.nvim",
+  {
+    "fabius/molokai.nvim",
+    dependencies = "rktjmp/lush.nvim",
+    lazy = false,
+    priority = 1000,
+  },
   -- cmp plugins
   "hrsh7th/nvim-cmp",          -- The completion plugin
   "hrsh7th/cmp-buffer",        -- buffer completions
