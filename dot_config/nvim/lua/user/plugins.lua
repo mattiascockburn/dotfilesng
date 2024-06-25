@@ -137,7 +137,7 @@ local plugins = {
 
         update_on_change = true,
 
-        app = 'webview', -- 'webview', 'browser', string or a table of strings
+        app = { 'firefox', '--new-window' },
         -- explained below
 
         filetype = { 'markdown' }, -- list of filetypes to recognize as markdown
