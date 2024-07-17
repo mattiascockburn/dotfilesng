@@ -26,5 +26,8 @@ which direnv &>/dev/null && {
   fi
 }
 
+# https://consoledonottrack.com/
+export DO_NOT_TRACK=1
+
 [[ -f ~/.alias ]] && source ~/.alias
 
