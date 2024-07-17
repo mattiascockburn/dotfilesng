@@ -7,17 +7,22 @@ name = "laptop builtin"
 [[profile]]
 name = "HomeOffice"
   [[profile.output]]
-  match = "eDP-1"
+  search = "eDP-1"
   enable = false
 
   [[profile.output]]
-  match = "/.*DELL S2721DS D3K2R43.*/"
+#search = "/.*S2721DS D3K2R43.*/"
+  search = "HDMI-A-1"
+  mode = "best"
   enable = true
   transform = "90"
   position = { x=0, y=0}
-  adaptive_sync = true
+  adaptive_sync = false
   [[profile.output]]
-  match = "/.*M32QC 21390B000953.*/"
+#search = "/.*M32QC 21390B000953.*/"
+  search = "DP-1"
+  mode = "best"
+  transform = "normal"
   enable = true
   position = { x=1440, y=500}
   adaptive_sync = true
