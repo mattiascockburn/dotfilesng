@@ -1,32 +1,3 @@
-doc-build() {
-  IMAGE=localhost/suse-latex
-  DOCKER_OPTS=''
-  if [ -n "$TEXMF" ]; then
-    DOCKER_OPTS="${DOCKER_OPTS} -v${TEXMF}:/home/build/texmf:ro"
-  fi
-  CMD="cd ~/svn; make $@"
-  # puppet docs "automagic"
-  if [ -x ./inputdoc ]; then
-    [[ -z "$1" ]] && CMD='cd ~/svn/; ./inputdoc'
-  fi
-  if [ "$1" = 'shell' ]; then
-    CMD='/bin/bash'
-  elif [ "$1" = 'single' ]; then
-    if [ -z "$2" ]; then
-      echo You need to supply a filename
-      exit 1
-    fi
-    CMD="cd ~/svn; pdflatex $2"
-  elif [ "$1" = 'command' ]; then
-    if [ -z "$2" ]; then
-      echo You need to supply a command
-      exit 1
-    fi
-    CMD="cd ~/svn; $2"
-  fi
-  podman run -t -i --net=none --userns keep-id --rm $DOCKER_OPTS -v $(pwd):/home/build/svn:z $IMAGE bash -c "$CMD"
-}
-
 alias usbguard='sudo usbguard'
 alias cd..='cd ..'
 alias shellescape='sed -e "s/\([\ ()]\)/\\\\1/g"'
@@ -35,15 +6,6 @@ alias pass=gopass
 alias g=git
 alias o=xdg-open
 
-salt-ssh() {
-  podman run -ti --rm -w $(pwd) -v $(pwd):$(pwd) -v $HOME:$HOME -v $HOME:/root -e HOME=/root salt-ssh:3002 salt-ssh --no-host-keys $@
-}
-
-salt-docs() {
-  u="$HOME/git/salt/doc/_build/html/ref/index.html"
-  [[ -f "$u" ]] && surf "$u"
-}
-
 pcr_print() {
   pcrs=/sys/class/tpm/tpm0/pcr-sha1
   for a in $(seq 0 23); do echo -ne "$a:\t"; cat "${pcrs}/$a";done
@@ -51,17 +13,6 @@ pcr_print() {
 
 json2yaml() {
   cat | python -c 'import sys, yaml, json; print(yaml.dump(json.loads(sys.stdin.read())))'
-}
-
-ec2_instances() {
-  aws ec2 describe-instances  \
-  --query "Reservations[*].Instances[*].{InstanceID:InstanceId,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress,Name:Tags[?Key=='Name']|[0].Value,Type:InstanceType,Status:State.Name,VpcId:VpcId}" \
-  --filters Name=instance-state-name,Values=running \
-  --output table
-}
-
-ssm_session() {
-  aws ssm start-session --target $@
 }
 
 alias unlock_srv='gopass show -o -n layer8.fail/encroot/md2|  ssh -i ~/.ssh/hetzner -oPort=222 root@cockburn.tech unlock'
@@ -79,10 +30,6 @@ ranger() {
 
 kshowSecrets() {
   cat | yq '.data | map_values(@base64d)'
-}
-
-keycloak() {
-  docker run -p 8080:8080 -v ${PWD}/keycloak_data:/opt/keycloak/data/ -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:21.0.2 start-dev --log-level INFO,org.keycloak.social.user_profile_dump:debug
 }
 
 alias k=kubectl
@@ -140,5 +87,3 @@ kube-get-all-images() {
   # see https://kubernetes.io/docs/tasks/access-application-cluster/list-all-running-container-images/
   kubectl get pods --all-namespaces -o go-template --template="{{range .items}}{{range .spec.containers}}{{.image}} {{end}}{{end}}" | tr ' ' \\n
 }
-
-
