@@ -88,3 +88,27 @@ kube-get-all-images() {
   # see https://kubernetes.io/docs/tasks/access-application-cluster/list-all-running-container-images/
   kubectl get pods --all-namespaces -o go-template --template="{{range .items}}{{range .spec.containers}}{{.image}} {{end}}{{end}}" | tr ' ' \\n
 }
+
+get-vcluster-kubeconfig() {
+  [[ "$#" -lt 1 ]] && {
+    echo You need to give the name of the instance, e.g. instance-e2e
+    return
+  }
+  instance="$1"
+  kubectl get secret -n "$instance" "${instance}-vcluster" -o json | jq -r .data.config | base64 -d > "${HOME}/.kube/${instance}.json"
+}
+
+annotate-external-secrets() {
+  for es in $(kubectl get es -A -o go-template --template '{{ range .items}}{{.metadata.namespace}}:{{ .metadata.name}}{{"\n"}}{{end}}'); do
+    kubectl annotate es -n ${es%%:*} ${es##*:} force-sync=$(date +%s) --overwrite
+  done
+}
+
+get-edgecluster-config() {
+  [[ "$#" -lt 1 ]] && {
+    echo You need to give the name of the instance, e.g. instance-e2e
+    return
+  }
+  instance="$1"
+  kubectl get secret -n default "${instance}-kubeconfig" -o json | jq -r .data.value | base64 -d > "${HOME}/.kube/${instance}.json"
+}
