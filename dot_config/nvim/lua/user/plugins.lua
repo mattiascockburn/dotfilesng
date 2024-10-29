@@ -21,12 +21,12 @@ local plugins = {
   "moll/vim-bbye",
   'rgroli/other.nvim',                   -- easily load corresponding files, e.g. unit tests
   "nvim-lualine/lualine.nvim",           -- enhanced status line plugin
+  { 'pnx/lualine-lsp-status' },
   "lewis6991/impatient.nvim",            -- cache lua plugins and reduce load times significantly
   "lukas-reineke/indent-blankline.nvim", -- visualize indentation of lines
   -- Easily align text
   -- used by puppet-vim
   "godlygeek/tabular",
-  "rodjek/vim-puppet", -- puppet syntax support and formatting helpers
   -- Highlight ugly extra whitespace
   "ntpeters/vim-better-whitespace",
   -- tpope FTW
@@ -38,11 +38,9 @@ local plugins = {
   "tpope/vim-eunuch",
   -- Languages
   -- syntax/indent/ftplugins for a many languages/tools
-  "saltstack/salt-vim",
   "hashivim/vim-terraform",
   "lifepillar/pgsql.vim",
   "neomutt/neomutt.vim",
-  { "towolf/vim-helm",       ft = 'helm' },
   -- git helpers
   {
     "NeogitOrg/neogit",
@@ -68,14 +66,57 @@ local plugins = {
   -- Saner match highlighting and search mappings
   "wincent/loupe",
   -- Colorschemes
-  -- 'lunarvim/colorschemes' -- A bunch of colorschemes you can try out
-  "EdenEast/nightfox.nvim",
   {
-    "fabius/molokai.nvim",
-    dependencies = "rktjmp/lush.nvim",
+    "killitar/obscure.nvim",
     lazy = false,
     priority = 1000,
+    opts = {}
   },
+  {
+    'paulo-granthon/hyper.nvim',
+    config = function()
+      require('hyper').load()
+    end
+  },
+  {
+    "rebelot/kanagawa.nvim",
+    config = function()
+      require('kanagawa').setup({
+        compile = false,  -- enable compiling the colorscheme
+        undercurl = true, -- enable undercurls
+        commentStyle = { italic = true },
+        functionStyle = {},
+        keywordStyle = { italic = true },
+        statementStyle = { bold = true },
+        typeStyle = {},
+        transparent = false,   -- do not set background color
+        dimInactive = false,   -- dim inactive window `:h hl-NormalNC`
+        terminalColors = true, -- define vim.g.terminal_color_{0,17}
+        colors = {             -- add/modify theme and palette colors
+          palette = {},
+          theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
+        },
+        overrides = function(colors) -- add/modify highlights
+          return {}
+        end,
+        theme = "wave",  -- Load "wave" theme when 'background' option is not set
+        background = {   -- map the value of 'background' option to a theme
+          dark = "wave", -- try "dragon" !
+          light = "lotus"
+        },
+      })
+    end
+  },
+  {
+    'navarasu/onedark.nvim',
+    config = function()
+      require('onedark').setup {
+        style = 'darker'
+      }
+    end
+  },
+  "folke/tokyonight.nvim",
+  "EdenEast/nightfox.nvim",
   -- cmp plugins
   "hrsh7th/nvim-cmp",          -- The completion plugin
   "hrsh7th/cmp-buffer",        -- buffer completions
@@ -122,42 +163,53 @@ local plugins = {
 
   -- Markdown preview
   {
-    "toppair/peek.nvim",
-    event = { "VeryLazy" },
-    build = "deno task --quiet build:fast",
-    config = function()
-      require('peek').setup({
-        auto_load = true,        -- whether to automatically load preview when
-        -- entering another markdown buffer
-        close_on_bdelete = true, -- close preview window on buffer delete
-
-        syntax = true,           -- enable syntax highlighting, affects performance
-
-        theme = 'dark',          -- 'dark' or 'light'
-
-        update_on_change = true,
-
-        app = { 'firefox', '--new-window' },
-        -- explained below
-
-        filetype = { 'markdown' }, -- list of filetypes to recognize as markdown
-
-        -- relevant if update_on_change is true
-        throttle_at = 200000,   -- start throttling when file exceeds this
-        -- amount of bytes in size
-        throttle_time = 'auto', -- minimum amount of time in milliseconds
-        -- that has to pass before starting new render
-      })
-      -- refer to `configuration to change defaults`
-      vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
-      vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
-    end,
+    'brianhuster/live-preview.nvim',
+    dependencies = { 'brianhuster/autosave.nvim' }, -- Not required, but recomended for autosaving and sync scrolling
+    opts = {
+      commands = {
+        start = 'LivePreview', -- Command to start the live preview server and open the default browser.
+        stop = 'StopPreview',  -- Command to stop the live preview.
+      },
+      port = 5500,             -- Port to run the live preview server on.
+      browser = 'default',     -- Terminal command to open the browser for live-previewing (eg. 'firefox', 'flatpak run com.vivaldi.Vivaldi'). By default, it will use the default browser.
+      dynamic_root = false,    -- If true, the plugin will set the root directory to the previewed file's directory. If false, the root directory will be the current working directory (`:lua print(vim.uv.cwd())`).
+      sync_scroll = false,     -- If true, the plugin will sync the scrolling in the browser as you scroll in the Markdown files in Neovim.
+    },
   },
-  { "ellisonleao/glow.nvim", config = function() require("glow").setup() end },
-
   -- Markdown helper
   -- key mappings are defined in `ftplugin/markdown.lua`
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
+  },
   "allen-mack/nvim-table-md",
+  {
+    'SCJangra/table-nvim',
+    ft = 'markdown',
+    opts = {
+      padd_column_separators = true,   -- Insert a space around column separators.
+      mappings = {                     -- next and prev work in Normal and Insert mode. All other mappings work in Normal mode.
+        next = '<TAB>',                -- Go to next cell.
+        prev = '<S-TAB>',              -- Go to previous cell.
+        insert_row_up = '<A-k>',       -- Insert a row above the current row.
+        insert_row_down = '<A-j>',     -- Insert a row below the current row.
+        move_row_up = '<A-S-k>',       -- Move the current row up.
+        move_row_down = '<A-S-j>',     -- Move the current row down.
+        insert_column_left = '<A-h>',  -- Insert a column to the left of current column.
+        insert_column_right = '<A-l>', -- Insert a column to the right of current column.
+        move_column_left = '<A-S-h>',  -- Move the current column to the left.
+        move_column_right = '<A-S-l>', -- Move the current column to the right.
+        insert_table = '<A-t>',        -- Insert a new table.
+        insert_table_alt = '<A-S-t>',  -- Insert a new table that is not surrounded by pipes.
+        delete_column = '<A-d>',       -- Delete the column under cursor.
+      }
+    },
+  },
 
   -- LSP
   {
@@ -178,8 +230,8 @@ local plugins = {
   "ap/vim-css-color",
   "lukas-reineke/lsp-format.nvim", -- autoformat using Language servers on write
   "RRethy/vim-illuminate",         -- illuminate current keyword in buffer
-  -- DAP / Debug Adapter Protocol related plugins
 
+  -- DAP / Debug Adapter Protocol related plugins
   "nvim-neotest/nvim-nio", -- dep for some other stuff like dap-ui
   {
     "rcarriga/nvim-dap-ui",
@@ -237,6 +289,28 @@ local plugins = {
   "AndrewRadev/splitjoin.vim", -- change between one line and multiline statements with gJ and gS
   -- decode/encode base64 directly in vim
   { 'taybart/b64.nvim' },
+  -- kustomize support
+  {
+    "allaman/kustomize.nvim",
+    requires = "nvim-lua/plenary.nvim",
+    ft = "yaml",
+    opts = {
+      enable_key_mappings = false,
+      enable_lua_snip = true,
+      validate = { kubeconform_args = { "--strict" } },
+      build = { additional_args = { "--enable-helm" } },
+    },
+    config = function(opts)
+      require('kustomize').setup({ opts })
+      -- default keybindings, adjust to your needs
+      vim.keymap.set("n", "<leader>kb", "<cmd>lua require('kustomize').build()<cr>", { noremap = true })
+      vim.keymap.set("n", "<leader>kk", "<cmd>lua require('kustomize').kinds()<cr>", { noremap = true })
+      vim.keymap.set("n", "<leader>kl", "<cmd>lua require('kustomize').list_resources()<cr>", { noremap = true })
+      vim.keymap.set("n", "<leader>kp", "<cmd>lua require('kustomize').print_resources()<cr>", { noremap = true })
+      vim.keymap.set("n", "<leader>kv", "<cmd>lua require('kustomize').validate()<cr>", { noremap = true })
+      vim.keymap.set("n", "<leader>kd", "<cmd>lua require('kustomize').deprecations()<cr>", { noremap = true })
+    end,
+  },
   "akinsho/toggleterm.nvim",
   {
     "beauwilliams/focus.nvim",
@@ -291,6 +365,36 @@ local plugins = {
         },
       })
     end,
+  },
+  -- Terminal
+  {
+    'rebelot/terminal.nvim',
+    config = function()
+      require("terminal").setup()
+      local term_map = require("terminal.mappings")
+      vim.keymap.set({ "n", "x" }, "<leader>ts", term_map.operator_send, { expr = true })
+      vim.keymap.set("n", "<leader>to", term_map.toggle)
+      vim.keymap.set("n", "<leader>tO", term_map.toggle({ open_cmd = "enew" }))
+      vim.keymap.set("n", "<leader>tr", term_map.run)
+      vim.keymap.set("n", "<leader>tR", term_map.run(nil, { layout = { open_cmd = "enew" } }))
+      vim.keymap.set("n", "<leader>tk", term_map.kill)
+      vim.keymap.set("n", "<leader>t]", term_map.cycle_next)
+      vim.keymap.set("n", "<leader>t[", term_map.cycle_prev)
+      vim.keymap.set("n", "<leader>tl", term_map.move({ open_cmd = "belowright vnew" }))
+      vim.keymap.set("n", "<leader>tL", term_map.move({ open_cmd = "botright vnew" }))
+      vim.keymap.set("n", "<leader>th", term_map.move({ open_cmd = "belowright new" }))
+      vim.keymap.set("n", "<leader>tH", term_map.move({ open_cmd = "botright new" }))
+      vim.keymap.set("n", "<leader>tf", term_map.move({ open_cmd = "float" }))
+
+      -- This trips me up more than it helps
+      -- vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter", "TermOpen" }, {
+      --   callback = function(args)
+      --     if vim.startswith(vim.api.nvim_buf_get_name(args.buf), "term://") then
+      --       vim.cmd("startinsert")
+      --     end
+      --   end,
+      -- })
+    end
   },
 }
 
