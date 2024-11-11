@@ -181,3 +181,25 @@ vim.keymap.set("n", "<leader>do", ":DapStepOut<cr>", term_opts)
 vim.keymap.set("n", "<leader>de", ":DapTerminate<cr>", term_opts)
 vim.keymap.set("n", "<leader>dt", ":lua require('dap-go').debug_test()<cr>", term_opts)
 vim.keymap.set("n", "<leader>dlt", ":lua require('dap-go').debug_last_test()<cr>", term_opts)
+
+local function insertFullPath()
+  local filepath = vim.fn.expand('%:p')
+  for x in { '+', "p" } do
+    vim.fn.setreg(x, filepath)
+  end
+  print('Yanked full path ' .. filepath)
+end
+
+local function insertRelativePath()
+  local filepath = vim.fn.expand('%:~:.')
+  for _, x in pairs({ '+', "p" }) do
+    vim.fn.setreg(x, filepath)
+  end
+  print('Yanked relative path ' .. filepath)
+end
+
+vim.keymap.set('n', '<leader>ypf', insertFullPath,
+  { desc = 'Copy full path to file to clipboard', noremap = true, silent = true })
+
+vim.keymap.set('n', '<leader>ypr', insertRelativePath,
+  { desc = 'Copy relative path to file to clipboard', noremap = true, silent = true })
