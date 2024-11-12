@@ -6,6 +6,8 @@ alias pass=gopass
 alias g=git
 alias o=xdg-open
 
+alias dotfiles="cd  ~/.local/share/chezmoi/"
+
 pcr_print() {
   pcrs=/sys/class/tpm/tpm0/pcr-sha1
   for a in $(seq 0 23); do echo -ne "$a:\t"; cat "${pcrs}/$a";done
@@ -111,4 +113,31 @@ get-edgecluster-config() {
   }
   instance="$1"
   kubectl get secret -n default "${instance}-kubeconfig" -o json | jq -r .data.value | base64 -d > "${HOME}/.kube/${instance}.json"
+}
+
+run-jaeger() {
+  docker rm -f jaeger &>/dev/null
+  docker run -d --name jaeger \
+    -e COLLECTOR_OTLP_ENABLED=true \
+    -e COLLECTOR_ZIPKIN_HOST_PORT=:9411 \
+    -p 5775:5775/udp \
+    -p 6831:6831/udp \
+    -p 6832:6832/udp \
+    -p 5778:5778 \
+    -p 16686:16686 \
+    -p 14250:14250 \
+    -p 14268:14268 \
+    -p 14269:14269 \
+    -p 4317:4317 \
+    -p 4318:4318 \
+    -p 9411:9411 \
+    jaegertracing/all-in-one:1.62.0
+  URL='http://localhost:16686'
+  echo "The UI is available at $URL"
+  xdg-open "$URL"
+}
+
+debug-talos() {
+  HOST=${1:-192.168.122.47}
+  ssh -o UserKnownHostsFile=/dev/null "root@$HOST"
 }
