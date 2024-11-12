@@ -126,3 +126,12 @@ bmark() {
 ccd() {
   cd $(fzf <~/.bookmarks)
 }
+
+bmark_clean(){
+  b=~/.bookmarks
+  out=$(mktemp /tmp/bmc.XXX)
+  while read i; do
+    [[ -d "$i" ]] && echo "$i" >>"$out"
+  done < "$b"
+  mv "$out" "$b"
+}
