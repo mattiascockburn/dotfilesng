@@ -2,7 +2,7 @@ local status_ok, refactoring = pcall(require, "refactoring")
 if not status_ok then
   return
 end
-require('refactoring').setup({
+refactoring.setup({
   prompt_func_return_type = {
     go = true,
     java = false,
