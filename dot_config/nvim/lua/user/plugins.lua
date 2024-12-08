@@ -218,7 +218,17 @@ local plugins = {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     { "neovim/nvim-lspconfig", event = { "BufReadPre", "BufNewFile", "BufEnter" } },
   },
-  "folke/neodev.nvim",               -- helper for neovim lua dev
+  {
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
+  },
   "tamago324/nlsp-settings.nvim",    -- language server settings defined in json for
   "jose-elias-alvarez/null-ls.nvim", -- for formatters and linters
   "b0o/schemastore.nvim",            -- schemastore.org for json schemas in jsonls
