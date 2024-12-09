@@ -135,6 +135,15 @@ local plugins = {
       "3rd/image.nvim",              -- Optional image support in preview window: See `# Preview Mode` for more information
     }
   },
+  {
+    's1n7ax/nvim-window-picker',
+    name = 'window-picker',
+    event = 'VeryLazy',
+    version = '2.*',
+    config = function()
+      require 'window-picker'.setup()
+    end,
+  },
   -- nifty filesystem editing
   {
     'stevearc/oil.nvim',
