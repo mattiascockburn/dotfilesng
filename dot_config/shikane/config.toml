@@ -21,7 +21,7 @@ name = "HomeOffice"
   [[profile.output]]
 #search = "/.*M32QC 21390B000953.*/"
   search = "DP-1"
-  mode = "best"
+  mode = "2560x1440"
   transform = "normal"
   enable = true
   position = { x=1440, y=500}
