@@ -232,6 +232,16 @@ local plugins = {
   "tamago324/nlsp-settings.nvim",    -- language server settings defined in json for
   "jose-elias-alvarez/null-ls.nvim", -- for formatters and linters
   "b0o/schemastore.nvim",            -- schemastore.org for json schemas in jsonls
+  "someone-stole-my-name/yaml-companion.nvim",
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    config = function()
+      vim.keymap.set("n", "<leader>ss", "<cmd>lua require('yaml-companion').open_ui_select()<cr>", { noremap = true })
+    end,
+  },
   {
     "folke/trouble.nvim",
     opts = {}, -- for default options, refer to the configuration section for custom setup.
