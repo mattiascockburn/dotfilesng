@@ -138,7 +138,12 @@ local plugins = {
   -- nifty filesystem editing
   {
     'stevearc/oil.nvim',
-    config = function() require('oil').setup() end
+    config = function()
+      require("oil").setup()
+      vim.keymap.set("n", "-", function() vim.api.nvim_command("Oil") end, { desc = "Open parent directory" })
+    end,
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
   --- Alternative to vim-surround with treesitter support
   {
     "kylechui/nvim-surround",
