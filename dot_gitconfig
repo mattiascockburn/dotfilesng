@@ -36,6 +36,9 @@
 [includeIf "gitdir:~/git/schwarz/"]
   path = /home/mattias/.gitconfigs/iits
 
+[includeIf "gitdir:~/git/schwarz/edgecloud/developer-docs"]
+  path = /home/mattias/.gitconfigs/schwarz
+
 [commit]
   gpgSign = true
 [tag]
