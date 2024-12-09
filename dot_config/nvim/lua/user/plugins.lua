@@ -31,7 +31,6 @@ local plugins = {
   "ntpeters/vim-better-whitespace",
   -- tpope FTW
   "tpope/vim-unimpaired",
-  "tpope/vim-surround",
   "tpope/vim-repeat",
   "tpope/vim-endwise",
   "tpope/vim-speeddating",
@@ -140,6 +139,16 @@ local plugins = {
   {
     'stevearc/oil.nvim',
     config = function() require('oil').setup() end
+  --- Alternative to vim-surround with treesitter support
+  {
+    "kylechui/nvim-surround",
+    version = "*", -- Use for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup({
+        -- Configuration here, or leave empty to use defaults
+      })
+    end
   },
   -- YAML helper
   {
