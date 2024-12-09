@@ -463,6 +463,31 @@ local plugins = {
       -- })
     end
   },
+  -- AI bullshit
+  {
+    "robitx/gp.nvim",
+    config = function()
+      local conf = {
+        providers = {
+          ollama = {
+            endpoint = "https://ai.iits.tech/backend/api/chat/completions",
+            secret = {
+              "bash",
+              "-c",
+              "gopass",
+              "show",
+              "-o",
+              "iits/ai/api"
+            }
+          },
+
+        },
+      }
+      require("gp").setup(conf)
+
+      -- Setup shortcuts here (see Usage > Shortcuts in the Documentation/Readme)
+    end,
+  },
 }
 
 local opts = {}
