@@ -292,7 +292,7 @@ local plugins = {
         desc = "Quickfix List (Trouble)",
       },
     },
-  },
+
   "folke/lsp-colors.nvim",         -- add LSP colors for colorschemes that don't yet support them
   "ap/vim-css-color",
   "lukas-reineke/lsp-format.nvim", -- autoformat using Language servers on write
