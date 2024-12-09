@@ -255,7 +255,8 @@ local plugins = {
   "tamago324/nlsp-settings.nvim",    -- language server settings defined in json for
   "jose-elias-alvarez/null-ls.nvim", -- for formatters and linters
   "b0o/schemastore.nvim",            -- schemastore.org for json schemas in jsonls
-  "someone-stole-my-name/yaml-companion.nvim",
+  {
+    "someone-stole-my-name/yaml-companion.nvim",
     dependencies = {
       "neovim/nvim-lspconfig",
       "nvim-lua/plenary.nvim",
