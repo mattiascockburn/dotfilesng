@@ -26,6 +26,7 @@
   undomerge    = reset --hard ORIG_HEAD
   whoops       = commit -a --amend -C HEAD
   serve        = !git daemon --log-destination=stderr --reuseaddr --verbose --base-path=. --export-all ./.git
+  stashpull    = "!sh -c \"git stash; git pull; git stash pop\""
 
 [includeIf "gitdir:~/aur/"]
   path = .gitconfigs/archlinux
