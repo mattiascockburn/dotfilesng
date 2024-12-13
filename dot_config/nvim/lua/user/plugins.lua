@@ -237,8 +237,10 @@ local plugins = {
   -- LSP
   {
     "williamboman/mason.nvim",
+    "mfussenegger/nvim-lint",
     "williamboman/mason-lspconfig.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
+    "rshkarin/mason-nvim-lint",
     { "neovim/nvim-lspconfig", event = { "BufReadPre", "BufNewFile", "BufEnter" } },
   },
   {
