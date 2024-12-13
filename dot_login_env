@@ -8,3 +8,5 @@ export USE_SWAY=y
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
 export GOPRIVATE=dev.azure.com
+
+export DOTNET_CLI_TELEMETRY_OPTOUT=1 # MS .net core opt out of telemetry
