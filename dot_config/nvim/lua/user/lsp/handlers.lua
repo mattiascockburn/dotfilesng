@@ -97,7 +97,7 @@ M.on_attach = function(client, bufnr)
 
   -- Disable LSP with helm as yamlls does not work all that great for charts
   if vim.bo[bufnr].buftype ~= "" or vim.bo[bufnr].filetype == "helm" then
-    vim.diagnostic.disable(bufnr)
+    vim.diagnostic.enable(false, bufnr)
     vim.defer_fn(function()
       vim.diagnostic.reset(nil, bufnr)
     end, 1000)
