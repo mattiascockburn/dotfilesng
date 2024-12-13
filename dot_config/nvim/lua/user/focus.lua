@@ -8,8 +8,8 @@ focusmap('j')
 focusmap('k')
 focusmap('l')
 
-local ignore_filetypes = { 'NvimTree_1' }
-local ignore_buftypes = { 'nofile', 'prompt', 'popup' }
+local ignore_filetypes = { 'NvimTree_1', 'Scratch', 'trouble' }
+local ignore_buftypes = { 'nofile', 'prompt', 'popup', 'trouble', 'Scratch' }
 
 local augroup =
     vim.api.nvim_create_augroup('FocusDisable', { clear = true })
