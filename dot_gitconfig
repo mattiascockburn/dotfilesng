@@ -72,3 +72,6 @@
 
 [diff]
     colorMoved = default
+
+[include]
+  path = /home/mattias/.gitconfigs/private_remotes
