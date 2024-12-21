@@ -40,6 +40,32 @@ local plugins = {
   "hashivim/vim-terraform",
   "lifepillar/pgsql.vim",
   "neomutt/neomutt.vim",
+  -- autocompletion
+  {
+    'saghen/blink.cmp',
+    dependencies = 'rafamadriz/friendly-snippets',
+    version = '*',
+    opts = {
+      keymap = { preset = 'default' },
+
+      appearance = {
+        use_nvim_cmp_as_default = true,
+        nerd_font_variant = 'mono'
+      },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
+      },
+
+      -- experimental auto-brackets support
+      accept = { auto_brackets = { enabled = true } },
+
+      -- experimental signature help support
+      trigger = { signature_help = { enabled = false } },
+
+      signature = { enabled = true }
+    },
+    opts_extend = { "sources.default" }
+  },
   -- git helpers
   {
     "NeogitOrg/neogit",
@@ -116,14 +142,6 @@ local plugins = {
   },
   "folke/tokyonight.nvim",
   "EdenEast/nightfox.nvim",
-  -- cmp plugins
-  "hrsh7th/nvim-cmp",          -- The completion plugin
-  "hrsh7th/cmp-buffer",        -- buffer completions
-  "FelipeLema/cmp-async-path", -- async path completions
-  "hrsh7th/cmp-cmdline",       -- cmdline completions
-  "hrsh7th/cmp-nvim-lsp",
-  "hrsh7th/cmp-nvim-lsp-signature-help",
-  "saadparwaiz1/cmp_luasnip", -- snippet completions
   -- File Management Helpers
   {
     "nvim-neo-tree/neo-tree.nvim",
@@ -241,7 +259,11 @@ local plugins = {
     "williamboman/mason-lspconfig.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     "rshkarin/mason-nvim-lint",
-    { "neovim/nvim-lspconfig", event = { "BufReadPre", "BufNewFile", "BufEnter" } },
+    {
+      "neovim/nvim-lspconfig",
+      dependencies = { 'saghen/blink.cmp' },
+      event = { "BufReadPre", "BufNewFile", "BufEnter" }
+    },
   },
   {
     "folke/lazydev.nvim",

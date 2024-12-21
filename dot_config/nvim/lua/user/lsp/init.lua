@@ -38,5 +38,6 @@ for _, server in pairs(mlsp.get_installed_servers()) do
   if has_custom_opts then
     opts = vim.tbl_deep_extend("force", opts, server_custom_opts)
   end
+  opts.capabilities = require('blink.cmp').get_lsp_capabilities(opts.capabilities)
   lspconfig[server].setup(opts)
 end
