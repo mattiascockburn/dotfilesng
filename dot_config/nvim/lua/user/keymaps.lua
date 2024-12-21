@@ -3,7 +3,7 @@ local opts = { noremap = true, silent = true }
 local term_opts = { silent = true }
 
 -- Shorten function name
-local keymap = vim.api.nvim_set_keymap
+local keymap = vim.keymap.set
 
 --Remap space as leader key
 vim.g.mapleader = " "
@@ -23,6 +23,10 @@ keymap("n", "<A-h>", "<C-w>h", opts)
 keymap("n", "<A-j>", "<C-w>j", opts)
 keymap("n", "<A-k>", "<C-w>k", opts)
 keymap("n", "<A-l>", "<C-w>l", opts)
+
+-- quickfix
+keymap("n", "}c", ":cnext<cr>", opts)
+keymap("n", "{c", ":cprev<cr>", opts)
 
 -- Resize with arrows
 keymap("n", "<A-Up>", ":resize -2<CR>", opts)
@@ -92,8 +96,8 @@ keymap("n", "<Leader>tt", ":spl term://zsh<cr>", opts)
 keymap("n", "<Leader>tv", ":vspl term://zsh<cr>", opts)
 keymap("n", "<Leader>T", ":tabe term://zsh<cr>", opts)
 
--- Make it easier to get out of terminal mode
-keymap("t", "<Esc>", "<C-\\><C-n>", term_opts)
+-- Easily hit escape in terminal mode.
+keymap("t", "<esc><esc>", "<c-\\><c-n>")
 keymap("t", "<M-[>", "<Esc>", term_opts)
 keymap("t", "<C-v><Esc>", "<Esc>", term_opts)
 keymap("t", "<Leader><Esc>", "<Esc>", term_opts)
@@ -172,15 +176,15 @@ keymap("n", "<leader>tt", ":lua require('neotest').run.run()<cr>", term_opts)
 keymap("n", "<leader>ta", ":lua require('neotest').run.run(vim.fn.expand('%'))<cr>", term_opts)
 
 -- debug
-vim.keymap.set("n", "<leader>du", ":lua require('dapui').toggle()<cr>", term_opts)
-vim.keymap.set("n", "<leader>db", ":lua require('dap').toggle_breakpoint()<cr>", term_opts)
-vim.keymap.set("n", "<leader>dc", ":lua require('dap').continue()<cr>", term_opts)
-vim.keymap.set("n", "<leader>di", ":DapStepInto<cr>", term_opts)
-vim.keymap.set("n", "<leader>dn", ":DapStepOver<cr>", term_opts)
-vim.keymap.set("n", "<leader>do", ":DapStepOut<cr>", term_opts)
-vim.keymap.set("n", "<leader>de", ":DapTerminate<cr>", term_opts)
-vim.keymap.set("n", "<leader>dt", ":lua require('dap-go').debug_test()<cr>", term_opts)
-vim.keymap.set("n", "<leader>dlt", ":lua require('dap-go').debug_last_test()<cr>", term_opts)
+keymap("n", "<leader>du", ":lua require('dapui').toggle()<cr>", term_opts)
+keymap("n", "<leader>db", ":lua require('dap').toggle_breakpoint()<cr>", term_opts)
+keymap("n", "<leader>dc", ":lua require('dap').continue()<cr>", term_opts)
+keymap("n", "<leader>di", ":DapStepInto<cr>", term_opts)
+keymap("n", "<leader>dn", ":DapStepOver<cr>", term_opts)
+keymap("n", "<leader>do", ":DapStepOut<cr>", term_opts)
+keymap("n", "<leader>de", ":DapTerminate<cr>", term_opts)
+keymap("n", "<leader>dt", ":lua require('dap-go').debug_test()<cr>", term_opts)
+keymap("n", "<leader>dlt", ":lua require('dap-go').debug_last_test()<cr>", term_opts)
 
 local function insertFullPath()
   local filepath = vim.fn.expand('%:p')
@@ -198,8 +202,12 @@ local function insertRelativePath()
   print('Yanked relative path ' .. filepath)
 end
 
-vim.keymap.set('n', '<leader>ypf', insertFullPath,
+keymap('n', '<leader>ypf', insertFullPath,
   { desc = 'Copy full path to file to clipboard', noremap = true, silent = true })
 
-vim.keymap.set('n', '<leader>ypr', insertRelativePath,
+keymap('n', '<leader>ypr', insertRelativePath,
   { desc = 'Copy relative path to file to clipboard', noremap = true, silent = true })
+
+-- working with lua
+keymap("n", "<leader>x", "<cmd>.lua<CR>", { desc = "Execute the current line" })
+keymap("n", "<leader>xf", "<cmd>source %<CR>", { desc = "Execute the current file" })
