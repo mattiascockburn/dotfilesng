@@ -55,14 +55,6 @@ local plugins = {
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer' },
       },
-
-      -- experimental auto-brackets support
-      accept = { auto_brackets = { enabled = true } },
-
-      -- experimental signature help support
-      trigger = { signature_help = { enabled = false } },
-
-      signature = { enabled = true }
     },
     opts_extend = { "sources.default" }
   },
